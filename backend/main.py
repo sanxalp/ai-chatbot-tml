@@ -1,21 +1,16 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-app = FastAPI()
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # For development only; restrict in production!
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-class Message(BaseModel):
-    message: str
-
-@app.post("/chat")
-def chat(msg: Message):
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    message = data.get("message", "")
+    
     # For now, just echo back a dummy response
-    return {"response": f"Bot says: You said '{msg.message}'"}
+    return jsonify({"response": f"Bot says: You said '{message}'"})
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=8000)

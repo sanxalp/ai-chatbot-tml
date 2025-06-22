@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import "./App.css";
 
+//state management
 interface Message {
   sender: "user" | "bot";
   text: string;
@@ -29,13 +30,13 @@ function App() {
       const data = await response.json();
       setMessages((msgs) => [
         ...msgs,
-        // { sender: "user", text: input },     //add the user's message to the response
-        { sender: "bot", text: data.response }, //returns only the bot's response
+        // { sender: "user", text: input },
+        { sender: "bot", text: data.response },
       ]);
     } catch (error) {
       setMessages((msgs) => [
         ...msgs,
-        { sender: "user", text: input },
+        // { sender: "user", text: input },
         { sender: "bot", text: "Error: Could not reach backend." },
       ]);
     } finally {
